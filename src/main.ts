@@ -1,11 +1,8 @@
 //import { init, parse } from "npm:es-module-lexer@1.5.3";
-import { getDirectoryFiles } from "./file-listings/files.ts";
+import { CLIArgumentError } from "./errors/index.ts";
+import { getDirectoryFiles } from "./directory-management/directory-files.ts";
 
-//error handling
-if (!Deno.args.length) {
-  throw new Error("Please provide the directory path as an argument");
-}
+if (!Deno.args.length) throw new CLIArgumentError("No directory provided");
 
 const files = await getDirectoryFiles(Deno.args?.[0]);
-
-console.log(files);
+console.log("files", files);
