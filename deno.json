@@ -4,5 +4,8 @@
     "run": "deno run --allow-read src/main.ts",
     "test:permissions": "deno test --allow-read --allow-run",
     "print:coverage": "deno coverage coverage"
+  },
+  "imports": {
+    "@/": "./"
   }
 }
