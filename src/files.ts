@@ -13,7 +13,7 @@ export async function getDirectoryFilesForExtensions(
   async function traverseDirectory(dir: string) {
     try {
       for await (const contentOfDir of Deno.readDir(dir)) {
-        if (contentOfDir.isDirectory)
+        if (contentOfDir.isDirectory && contentOfDir.name !== "node_modules")
           await traverseDirectory(`${dir}/${contentOfDir.name}`);
         else if (extensions.includes(getFileExtension(contentOfDir.name)))
           files.push(`${dir}/${contentOfDir.name}`);

@@ -1,4 +1,3 @@
-//import { init, parse } from "npm:es-module-lexer@1.5.3";
 import { CLIArgumentError } from "@/src/errors/index.ts";
 import { getDirectoryFilesForExtensions } from "@/src/files.ts";
 
