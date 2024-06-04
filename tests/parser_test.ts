@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
-import { getMatchingImports } from "@/src/parser.ts";
+import { getMatchingImports, rewriteImportStatement } from "@/src/parser.ts";
 
 const mockFileContent = `
 import { name } from './mod.ts';
@@ -36,26 +36,50 @@ Deno.test(
   }
 );
 
-Deno.test("It finds the correct imports with relative flag set to false", async () => {
-  const matchingImports = await getMatchingImports(
+Deno.test(
+  "It finds the correct imports with relative flag set to false",
+  async () => {
+    const matchingImports = await getMatchingImports(
+      mockFileContent,
+      ".ts",
+      true,
+      false
+    );
+
+    const importSources = matchingImports.map(({ n }) => n);
+
+    assertEquals(importSources, ["vue", "react"]);
+
+    const matchingImports2 = await getMatchingImports(
+      mockFileContent,
+      ".js",
+      false,
+      false
+    );
+
+    const importSources2 = matchingImports2.map(({ n }) => n);
+
+    assertEquals(importSources2, ["vue", "react"]);
+  }
+);
+
+Deno.test("It rewrites the import statements correctly", async () => {
+  const matchingImports = await getMatchingImports(mockFileContent, ".js");
+
+  const newFileContent = rewriteImportStatement(
     mockFileContent,
-    ".ts",
-    true,
-    false
-  );
-
-  const importSources = matchingImports.map(({ n }) => n);
-
-  assertEquals(importSources, ["vue", 'react']);
-
-  const matchingImports2 = await getMatchingImports(
-    mockFileContent,
+    matchingImports,
     ".js",
-    false,
-    false
+    ".ts"
   );
 
-  const importSources2 = matchingImports2.map(({ n }) => n);
+  const newMatchingImports = await getMatchingImports(
+    newFileContent,
+    ".ts",
+    true
+  );
 
-  assertEquals(importSources2, ["vue", 'react']);
+  const importSources = newMatchingImports.map(({ n }) => n);
+
+  assertEquals(importSources, ["./mod.ts", "./mod.wasm.ts", "../gd/jjj.ts"]);
 });
