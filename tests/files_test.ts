@@ -1,8 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
-import {
-  getDirectoryFilesForExtensions,
-  getFileExtension,
-} from "@/src/files.ts";
+import { getDirectoryFilesForExtensions } from "@/src/files.ts";
+import { getFileExtension } from "@/src/string-utils.ts";
 
 Deno.test(
   "Testing the directory crawler",

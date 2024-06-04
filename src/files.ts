@@ -1,8 +1,5 @@
-import { CLIArgumentError } from "@/src/errors/cli-argument-error.ts";
-
-export function getFileExtension(fileName: string) {
-  return fileName.match(/\.[0-9a-z]+$/i)?.[0] || "";
-}
+import { CLIArgumentError } from "@/src/errors/index.ts";
+import { getFileExtension } from "@/src/string-utils.ts";
 
 export async function getDirectoryFilesForExtensions(
   directory: string,

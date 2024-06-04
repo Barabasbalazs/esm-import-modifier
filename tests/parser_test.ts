@@ -10,6 +10,7 @@ import cbs from "../gd/jjj.js";
 import ajsdas as fff from "./noextension"
 
 import { ref } from "vue";
+import { useHook } from "react";
 `;
 
 Deno.test("It finds the correct imports", async () => {
@@ -34,3 +35,27 @@ Deno.test(
     assertEquals(importSources, ["./mod.wasm.js", "../gd/jjj.js"]);
   }
 );
+
+Deno.test("It finds the correct imports with relative flag set to false", async () => {
+  const matchingImports = await getMatchingImports(
+    mockFileContent,
+    ".ts",
+    true,
+    false
+  );
+
+  const importSources = matchingImports.map(({ n }) => n);
+
+  assertEquals(importSources, ["vue", 'react']);
+
+  const matchingImports2 = await getMatchingImports(
+    mockFileContent,
+    ".js",
+    false,
+    false
+  );
+
+  const importSources2 = matchingImports2.map(({ n }) => n);
+
+  assertEquals(importSources2, ["vue", 'react']);
+});
