@@ -1,6 +1,9 @@
 //potentially have to support absolute imports like @/src/files
-export function isRelativeImport(importStatement: string) {
-  return importStatement.startsWith(".");
+export function isRelativeImport(
+  importStatement: string,
+  startingSymbols = [".", "/", "~", "@", "src"]
+) {
+  return startingSymbols.some((symbol) => importStatement.startsWith(symbol));
 }
 
 export function getFileExtension(fileName: string) {

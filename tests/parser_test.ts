@@ -11,6 +11,7 @@ import ajsdas as fff from "./noextension"
 
 import { ref } from "vue";
 import { useHook } from "react";
+import /*comment!*/ (  'asdf', { assert: { type: 'json' }});
 `;
 
 Deno.test("It finds the correct imports", async () => {
