@@ -40,38 +40,18 @@ export function rewriteImportStatement(
   fileContent: string,
   imports: ImportSpecifier[],
   patternToReplace: string,
-  addedString: string
+  addedString: string,
 ) {
   let newFileContent = fileContent;
 
   imports.forEach((importStatement) => {
     const importToModify = importStatement.n as string;
-    const replacement = patternToReplace
-      ? importToModify.replace(patternToReplace, addedString)
-      : `${importToModify}${addedString}`;
+    const replacement =
+      patternToReplace && importToModify.includes(patternToReplace)
+        ? importToModify.replace(patternToReplace, addedString)
+        : `${importToModify}${addedString}`;
     newFileContent = newFileContent.replace(importToModify, replacement);
   });
 
   return newFileContent;
 }
-
-/*
-const fileContent = await Deno.readTextFile(
-  "./tests/testing-util/example-directory/trails-controller.ts"
-);
-
-const imports = await getMatchingImports(fileContent, ".js", false, false);
-
-const firstImport = fileContent.slice(imports[0].s, imports[0].e);
-
-console.log("imports -> ", fileContent.replace(firstImport, "whatapp"));
-
-const newFileContent = rewriteImportStatement(
-  fileContent,
-  imports,
-  "",
-  "/vapor"
-);
-
-console.log("newFileContent -> ", newFileContent);
-*/

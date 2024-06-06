@@ -14,7 +14,7 @@ Deno.test("CLIArgument messageformat error", () => {
 
 Deno.test("Throw CLIArgumentError on invalid directory", async () => {
   try {
-    await getDirectoryFilesForExtensions("./invalid-dir");
+    await getDirectoryFilesForExtensions("./invalid-dir", [".ts", ".js"]);
   } catch (error) {
     assertEquals(
       error.message,

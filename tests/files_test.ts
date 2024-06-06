@@ -7,7 +7,8 @@ Deno.test(
   { permissions: { read: "inherit", run: "inherit" } },
   async () => {
     const files = await getDirectoryFilesForExtensions(
-      "./tests/testing-util/example-directory"
+      "./tests/testing-util/example-directory",
+      [".ts", ".js"]
     );
     assertEquals(
       files.sort(),

@@ -82,5 +82,10 @@ Deno.test("It rewrites the import statements correctly", async () => {
 
   const importSources = newMatchingImports.map(({ n }) => n);
 
-  assertEquals(importSources, ["./mod.ts", "./mod.wasm.ts", "../gd/jjj.ts"]);
+  assertEquals(importSources, [
+    "./mod.ts",
+    "./mod.wasm.ts",
+    "../gd/jjj.ts",
+    "./noextension.ts",
+  ]);
 });

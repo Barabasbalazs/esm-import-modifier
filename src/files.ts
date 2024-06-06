@@ -3,7 +3,7 @@ import { getFileExtension } from "@/src/string-utils.ts";
 
 export async function getDirectoryFilesForExtensions(
   directory: string,
-  extensions = [".js", ".ts"]
+  extensions: string[]
 ) {
   const files = [] as string[];
 
