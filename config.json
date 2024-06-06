@@ -1,0 +1,8 @@
+{
+  "directory": "./tests/testing-util/example-directory",
+  "extensions": [".js", ".ts"],
+  "patternToReplace": ".js",
+  "addedString": ".ts",
+  "ignoreExtensionless": false,
+  "relativeOnly": true
+}

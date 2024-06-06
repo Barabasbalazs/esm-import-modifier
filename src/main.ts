@@ -1,12 +1,19 @@
+import config from "@/config.json" with { type: "json"};
 import { CLIArgumentError } from "@/src/errors/index.ts";
 import { getDirectoryFilesForExtensions } from "@/src/files.ts";
 
-if (!Deno.args.length) throw new CLIArgumentError(1, "No directory provided");
+const {
+  directory,
+  extensions,
+  patternToReplace,
+  addedString,
+  ignoreExtensionless,
+  relativeOnly,
+} = config;
 
-const files = await getDirectoryFilesForExtensions(Deno.args?.[0], [
-  ".js",
-  ".ts",
-]);
+if (!directory) throw new CLIArgumentError(1, "No directory provided");
+
+const files = await getDirectoryFilesForExtensions(directory, extensions);
 
 files.forEach((fileName, index) => {
   const worker = new Worker(import.meta.resolve("@/src/worker.ts"), {
@@ -14,9 +21,10 @@ files.forEach((fileName, index) => {
   });
   worker.postMessage({
     fileName,
-    patternToReplace: ".js",
-    addedString: ".ts",
-    ignoreExtensionless: false,
+    patternToReplace,
+    addedString,
+    ignoreExtensionless,
+    relativeOnly,
     id: index,
   });
   worker.onmessage = ({ data }) => console.log(data);
