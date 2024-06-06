@@ -7,7 +7,6 @@ const files = await getDirectoryFilesForExtensions(Deno.args?.[0], [
   ".js",
   ".ts",
 ]);
-console.log("files", files);
 
 files.forEach((fileName, index) => {
   const worker = new Worker(import.meta.resolve("@/src/worker.ts"), {

@@ -12,19 +12,16 @@ async function parseFile(
     patternToReplace,
     ignoreExtensionless
   );
-  console.log("imports -> ", imports);
   const newFileContent = rewriteImportStatement(
     fileContent,
     imports,
     patternToReplace,
     addedString
   );
-  console.log("newFileContent -> ", newFileContent);
-  //Deno.writeTextFileSync(file, newFileContent);
+  Deno.writeTextFileSync(file, newFileContent);
 }
 
 self.onmessage = async (event: MessageEvent) => {
-  //await new Promise((resolve) => setTimeout(resolve, 1000));
   const logPromise = new Promise((resolve, _) => {
     const { id, fileName, patternToReplace, addedString, ignoreExtensionless } =
       event.data;
@@ -36,9 +33,7 @@ self.onmessage = async (event: MessageEvent) => {
     ).then(() => resolve(id));
   });
 
-  const ret = await logPromise;
-
-  console.log("ret -> ", ret);
+  await logPromise;
 
   self.close();
 };
