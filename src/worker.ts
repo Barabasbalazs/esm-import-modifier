@@ -22,18 +22,10 @@ async function parseFile(
 }
 
 self.onmessage = async (event: MessageEvent) => {
-  const logPromise = new Promise((resolve, _) => {
-    const { id, fileName, patternToReplace, addedString, ignoreExtensionless } =
-      event.data;
-    parseFile(
-      fileName,
-      patternToReplace,
-      addedString,
-      ignoreExtensionless
-    ).then(() => resolve(id));
-  });
+  const { fileName, patternToReplace, addedString, ignoreExtensionless } =
+    event.data;
 
-  await logPromise;
+  await parseFile(fileName, patternToReplace, addedString, ignoreExtensionless);
 
   self.postMessage(`Finished processing file: ${event.data.fileName}`);
 
