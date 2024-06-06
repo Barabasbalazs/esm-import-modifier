@@ -19,4 +19,5 @@ files.forEach((fileName, index) => {
     ignoreExtensionless: false,
     id: index,
   });
+  worker.onmessage = ({ data }) => console.log(data);
 });

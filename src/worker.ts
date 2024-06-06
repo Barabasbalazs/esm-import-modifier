@@ -35,5 +35,7 @@ self.onmessage = async (event: MessageEvent) => {
 
   await logPromise;
 
+  self.postMessage(`Finished processing file: ${event.data.fileName}`);
+
   self.close();
 };
