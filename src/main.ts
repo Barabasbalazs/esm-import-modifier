@@ -1,6 +1,8 @@
 import config from "@/config.json" with { type: "json"};
-import { ConfigError } from "@/src/errors/index.ts";
+import { validateConfig } from "@/src/config-validation.ts";
 import { getDirectoryFilesForExtensions } from "@/src/files.ts";
+
+validateConfig(config);
 
 const {
   directory,
@@ -10,8 +12,6 @@ const {
   ignoreExtensionless,
   relativeOnly,
 } = config;
-
-if (!directory) throw new ConfigError("directory", "No directory provided");
 
 const files = await getDirectoryFilesForExtensions(directory, extensions);
 
