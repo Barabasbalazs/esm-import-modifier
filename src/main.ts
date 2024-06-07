@@ -1,5 +1,5 @@
 import config from "@/config.json" with { type: "json"};
-import { CLIArgumentError } from "@/src/errors/index.ts";
+import { ConfigError } from "@/src/errors/index.ts";
 import { getDirectoryFilesForExtensions } from "@/src/files.ts";
 
 const {
@@ -11,7 +11,7 @@ const {
   relativeOnly,
 } = config;
 
-if (!directory) throw new CLIArgumentError(1, "No directory provided");
+if (!directory) throw new ConfigError("directory", "No directory provided");
 
 const files = await getDirectoryFilesForExtensions(directory, extensions);
 

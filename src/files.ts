@@ -1,4 +1,4 @@
-import { CLIArgumentError } from "@/src/errors/index.ts";
+import { ConfigError } from "@/src/errors/index.ts";
 import { getFileExtension } from "@/src/string-utils.ts";
 
 export async function getDirectoryFilesForExtensions(
@@ -17,7 +17,7 @@ export async function getDirectoryFilesForExtensions(
       }
     } catch (error) {
       if (error instanceof Deno.errors.NotFound)
-        throw new CLIArgumentError(1, "Could not find this directory");
+        throw new ConfigError("directory", "Could not find this directory");
     }
   }
 
