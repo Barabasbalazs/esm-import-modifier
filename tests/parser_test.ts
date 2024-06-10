@@ -14,6 +14,12 @@ import { useHook } from "react";
 import /*comment!*/ (  'asdf', { assert: { type: 'json' }});
 `;
 
+const vueMockFile = `
+import { onMounted, ref } from "vue";
+import { computed } from "vue";
+import { vue } from "vue"`
+;
+
 Deno.test("It finds the correct imports", async () => {
   const matchingImports = await getMatchingImports(mockFileContent, ".ts");
 
@@ -88,4 +94,28 @@ Deno.test("It rewrites the import statements correctly", async () => {
     "../gd/jjj.ts",
     "./noextension.ts",
   ]);
+});
+
+Deno.test("It rewrites the extensionless vue imports correctly", async () => {
+  const matchingImports = await getMatchingImports(
+    vueMockFile,
+    "",
+    false,
+    false
+  );
+
+  const newFileContent = rewriteImportStatement(
+    vueMockFile,
+    matchingImports,
+    "",
+    "/vapor"
+  );
+
+  assertEquals(
+    `
+import { onMounted } from "vue/vapor";
+import { computed } from "vue/vapor";
+import { vue } from "vue/vapor";`,
+    newFileContent
+  );
 });
