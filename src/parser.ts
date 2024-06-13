@@ -1,5 +1,9 @@
 import { ImportSpecifier, init, parse } from "npm:es-module-lexer@1.5.3";
-import { getFileExtension, isRelativeImport } from "@/src/string-utils.ts";
+import {
+  getFileExtension,
+  isRelativeImport,
+  replaceSubstringAtIndex,
+} from "@/src/string-utils.ts";
 import { ParseError } from "@/src/errors/index.ts";
 
 export async function getMatchingImports(
@@ -40,7 +44,7 @@ export function rewriteImportStatement(
   fileContent: string,
   imports: ImportSpecifier[],
   patternToReplace: string,
-  addedString: string,
+  addedString: string
 ) {
   let newFileContent = fileContent;
 
@@ -50,7 +54,23 @@ export function rewriteImportStatement(
       patternToReplace && importToModify.includes(patternToReplace)
         ? importToModify.replace(patternToReplace, addedString)
         : `${importToModify}${addedString}`;
-    newFileContent = newFileContent.replace(importToModify, replacement);
+
+    const importLine = fileContent.slice(
+      importStatement.ss,
+      importStatement.se
+    );
+
+    const posOfReplacement = importLine.lastIndexOf(importToModify);
+
+    newFileContent = newFileContent.replace(
+      importLine,
+      replaceSubstringAtIndex(
+        importLine,
+        posOfReplacement,
+        posOfReplacement + importToModify.length,
+        replacement
+      )
+    );
   });
 
   return newFileContent;
